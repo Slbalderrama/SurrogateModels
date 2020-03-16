@@ -34,6 +34,8 @@ param: Battery_Cycles := 5500; # 3
 
 param: Battery_Initial_SOC := 1;
 
+param: Fix_Invesment_Battery := 1000;
+
 param: Scenario_Weight :=
 
 1	1;
@@ -59,6 +61,11 @@ param: Renewable_Nominal_Capacity :=
 param: Maintenance_Operation_Cost_Renewable :=
 
 1   	0.015;
+
+param: Fix_Invesment_PV :=
+
+1       2000;
+
 
 
 # New parameters 4

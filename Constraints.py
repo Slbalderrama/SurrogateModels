@@ -74,8 +74,9 @@ def Net_Present_Cost(model): # OBJETIVE FUNTION: MINIMIZE THE NPC FOR THE SISTEM
    
     
     # Invesment cost
-    Inv_PV = sum(model.Renewable_Units[r]*model.Renewable_Nominal_Capacity[r]*model.Renewable_Invesment_Cost[r]
+    Inv_PV = sum(model.Fix_Invesment_PV[r]*model.Integer_PV[r] + model.Renewable_Units[r]*model.Renewable_Nominal_Capacity[r]*model.Renewable_Invesment_Cost[r]
                  for r in model.renewable_source)
+    
     if model.formulation == 'LP':
         Inv_Gen = sum(model.Generator_Invesment_Cost[g]*model.Generator_Nominal_Capacity[g]
                  for g in model.generator_type)
@@ -84,7 +85,7 @@ def Net_Present_Cost(model): # OBJETIVE FUNTION: MINIMIZE THE NPC FOR THE SISTEM
         Inv_Gen = sum(model.Generator_Invesment_Cost[g]*model.Generator_Nominal_Capacity[g]
         *model.Integer_generator[g] for g in model.generator_type) 
         
-    Inv_Bat = model.Battery_Nominal_Capacity*model.Battery_Invesment_Cost
+    Inv_Bat = model.Integer_Battery*model.Fix_Invesment_Battery + model.Battery_Nominal_Capacity*model.Battery_Invesment_Cost
     Initial_Inversion =  Inv_PV + Inv_Gen + Inv_Bat
     
            
@@ -168,6 +169,13 @@ def Max_Bat_out(model,i, t): #minimun flow of energy for the discharge fase
     :param model: Pyomo model as defined in the Model_creation library.
     '''
     return model.Energy_Battery_Flow_Out[i,t] <= model.Maximun_Discharge_Power*model.Delta_Time
+
+
+
+def Battery_Integer_Constraint(model):
+    
+    
+    return model.Battery_Nominal_Capacity <= 100000000*model.Integer_Battery
 
 ##################################################################################################
 ##############                    Energy Constraints                        ######################
@@ -297,3 +305,33 @@ def Battery_Min_Capacity(model):
     return   model.Battery_Nominal_Capacity >= model.Battery_Min_Capacity
 
 
+##################################################################################################
+#################                     PV Constraints                                ##############
+##################################################################################################
+    
+def PV_Integer_Constraint(model,r):
+    
+    
+    return model.Renewable_Units[r] <= 10000*model.Integer_PV[r]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    

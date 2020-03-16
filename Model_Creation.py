@@ -50,6 +50,9 @@ def Model_Creation(model, Renewable_Penetration,Battery_Independency,type_genera
                                               initialize=Initialize_Renewable_Energy
                                               , mutable=True) # Energy produccion of a solar panel in W
     
+    model.Fix_Invesment_PV = Param(model.renewable_source, within=NonNegativeReals)
+    
+    
     # Parameters of the battery bank
     model.Charge_Battery_Efficiency = Param() # Efficiency of the charge of the battery in  %
     model.Discharge_Battery_Efficiency = Param() # Efficiency of the discharge of the battery in %
@@ -62,6 +65,8 @@ def Model_Creation(model, Renewable_Penetration,Battery_Independency,type_genera
     model.Unitary_Battery_Reposition_Cost = Param(within=NonNegativeReals, 
                                           initialize=Battery_Reposition_Cost, mutable=True)
     model.Battery_Initial_SOC = Param(within=NonNegativeReals)
+    model.Fix_Invesment_Battery = Param(within=NonNegativeReals)
+    
     if  Battery_Independency > 0:
         model.Battery_Independency = Battery_Independency
         model.Battery_Min_Capacity = Param(initialize=Min_Bat_Capacity)
@@ -125,7 +130,9 @@ def Model_Creation(model, Renewable_Penetration,Battery_Independency,type_genera
         
     model.Renewable_Units = Var(model.renewable_source,
                                 within=NonNegativeReals,bounds= (0,1500)) # Number of units of solar panels
-
+    model.Integer_PV = Var(model.renewable_source, within=Binary)
+    
+    
     #200 
     # Variables associated to the battery bank
     # 300
@@ -139,6 +146,8 @@ def Model_Creation(model, Renewable_Penetration,Battery_Independency,type_genera
                                         within=NonNegativeReals) # State of Charge of the Battery in wh
     model.Maximun_Charge_Power = Var(within=NonNegativeReals,bounds=(0,bat))
     model.Maximun_Discharge_Power = Var(within=NonNegativeReals,bounds=(0,bat))
+    model.Integer_Battery = Var(within=Binary)
+    
     
     # Variables associated to the diesel generator
     def gen(model,g):

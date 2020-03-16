@@ -17,9 +17,9 @@ def Model_Resolution(model,Renewable_Penetration, Battery_Independency,datapath=
     
     from Constraints import  Net_Present_Cost, State_of_Charge,\
     Maximun_Charge, Minimun_Charge, Max_Power_Battery_Charge,\
-    Max_Power_Battery_Discharge, Max_Bat_in, Max_Bat_out, \
+    Max_Power_Battery_Discharge, Max_Bat_in, Max_Bat_out,Battery_Integer_Constraint, \
     Energy_balance, Maximun_Lost_Load, Renewable_Energy_Penetration,\
-    Maximun_Generator_Energy,Generator_Bounds_Min_Integer,\
+    Maximun_Generator_Energy,Generator_Bounds_Min_Integer, PV_Integer_Constraint,\
     Battery_Min_Capacity,Generator_Bounds_Max_Integer,Energy_Genarator_Energy_Max_Integer\
     
     
@@ -36,7 +36,7 @@ def Model_Resolution(model,Renewable_Penetration, Battery_Independency,datapath=
         model.RenewableEnergyPenetration = Constraint(rule=Renewable_Energy_Penetration)
     
     # Renewable constraints
-
+    model.PVIntegerConstraint = Constraint(model.renewable_source, rule=PV_Integer_Constraint)
     # Battery constraints
     model.StateOfCharge = Constraint(model.scenario, model.periods, rule=State_of_Charge) 
     model.MaximunCharge = Constraint(model.scenario, model.periods, rule=Maximun_Charge) 
@@ -45,6 +45,9 @@ def Model_Resolution(model,Renewable_Penetration, Battery_Independency,datapath=
     model.MaxPowerBatteryDischarge = Constraint(rule=Max_Power_Battery_Discharge)
     model.MaxBatIn = Constraint(model.scenario, model.periods, rule=Max_Bat_in) 
     model.Maxbatout = Constraint(model.scenario, model.periods, rule=Max_Bat_out) 
+    model.BatteryIntegerConstraint =  Constraint(rule=Battery_Integer_Constraint)
+    
+    
     if Battery_Independency > 0:
         model.BatteryMinCapacity = Constraint(rule=Battery_Min_Capacity)
 

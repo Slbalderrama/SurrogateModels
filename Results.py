@@ -32,6 +32,8 @@ def Load_results1(instance,i,n,type_generator):
     Renewable_Invesment_Cost = instance.Renewable_Invesment_Cost.extract_values()
     OyM_Renewable = instance.Maintenance_Operation_Cost_Renewable.extract_values()
     Renewable_Units = instance.Renewable_Units.get_values()
+    Fix_Invesment = instance.Fix_Invesment_PV.extract_values()
+    Integer_PV = instance.Integer_PV.get_values()
     Data_Renewable = pd.DataFrame()
     
     for r in range(1, Number_Renewable_Source + 1):
@@ -42,10 +44,12 @@ def Load_results1(instance,i,n,type_generator):
         Data_Renewable.loc['Inverter Efficiency', Name] = Inverter_Efficiency_Renewable[r]
         Data_Renewable.loc['Investment Cost (USD/W)', Name] = Renewable_Invesment_Cost[r]
         Data_Renewable.loc['OyM', Name] = OyM_Renewable[r]
-        Data_Renewable.loc['Invesment (USD)', Name] = Renewable_Units[r]*Renewable_Nominal_Capacity[r]*Renewable_Invesment_Cost[r]        
-        Data_Renewable.loc['OyM Cost (USD)', Name] = Data_Renewable.loc['Invesment (USD)', Name]*OyM_Renewable[r]        
+        Data_Renewable.loc['Fix invesment', Name] = Fix_Invesment[r]
+        Data_Renewable.loc['Investment Decision', Name] = Integer_PV[r]
+        Data_Renewable.loc['Invesment (USD)', Name] = Fix_Invesment[r]*Integer_PV[r] + Renewable_Units[r]*Renewable_Nominal_Capacity[r]*Renewable_Invesment_Cost[r]        
+        Data_Renewable.loc['OyM Cost (USD)', Name] = Renewable_Units[r]*Renewable_Nominal_Capacity[r]*Renewable_Invesment_Cost[r]*OyM_Renewable[r] 
         Data_Renewable.loc['Total Nominal Capacity (W)', Name] = Data_Renewable.loc['Nominal Capacity (W)', Name]*Data_Renewable.loc['Units', Name]    
-
+ 
     Data_Renewable.to_excel(writer, sheet_name='Data Renewable')    
     
     columns = []
@@ -283,6 +287,9 @@ def Load_results1(instance,i,n,type_generator):
     Dis_bat_eff = instance.Discharge_Battery_Efficiency.value
     Deep_of_Discharge = instance.Deep_of_Discharge.value
     Battery_Cycles = instance.Battery_Cycles.value
+    Fix_Invesment_Battery = instance.Fix_Invesment_Battery.extract_values()[None]
+    Integer_Battery = instance.Integer_Battery.get_values()[None]
+    
     
     Unitary_Battery_Cost = PriceBattery - Battery_Electronic_Invesmente_Cost
     Battery_Repostion_Cost =  Unitary_Battery_Cost/(Battery_Cycles*2*(1-Deep_of_Discharge))
@@ -299,7 +306,11 @@ def Load_results1(instance,i,n,type_generator):
     Battery_Data.loc['Deep of Discharge','Battery'] = Deep_of_Discharge
     Battery_Data.loc['Battery Cycles','Battery'] = Battery_Cycles
     Battery_Data.loc['Unitary Battery Reposition Cost (USD/Wh)','Battery'] =  Battery_Repostion_Cost
-    Battery_Data.loc['Invesment Cost (USD)','Battery'] = Battery_Nominal_Capacity*PriceBattery
+    Battery_Data.loc['Fix invesment', Name] = Fix_Invesment_Battery
+    Battery_Data.loc['Investment Decision', Name] = Integer_Battery  
+    
+    
+    Battery_Data.loc['Invesment Cost (USD)','Battery'] = Fix_Invesment_Battery*Integer_Battery + Battery_Nominal_Capacity*PriceBattery
     Battery_Data.loc['OyM Cost (USD)', 'Battery'] = Battery_Nominal_Capacity*PriceBattery*OM_Bat
      
     Battery_Data.to_excel(writer, sheet_name='Battery Data')
