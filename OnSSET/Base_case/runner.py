@@ -195,30 +195,7 @@ elif choice == 3:
                                grid_penalty_ratio=1,
                                grid_price=grid_price)
 
-        mg_hydro_calc = Technology(om_of_td_lines=0.02,
-                                   distribution_losses=0.05,
-                                   connection_cost_per_hh=125,
-                                   base_to_peak_load_ratio=1,
-                                   capacity_factor=0.5,
-                                   tech_life=30,
-                                   capital_cost=5000,
-                                   om_costs=0.02)
 
-        mg_wind_calc = Technology(om_of_td_lines=0.02,
-                                  distribution_losses=0.05,
-                                  connection_cost_per_hh=125,
-                                  base_to_peak_load_ratio=0.75,
-                                  capital_cost=2500,
-                                  om_costs=0.02,
-                                  tech_life=20)
-
-        mg_pv_calc = Technology(om_of_td_lines=0.03,
-                                distribution_losses=0.05,
-                                connection_cost_per_hh=125,
-                                base_to_peak_load_ratio=0.9,
-                                tech_life=20,
-                                om_costs=0.02,
-                                capital_cost=3500 * pv_capital_cost_adjust)
 
         sa_pv_calc = Technology(base_to_peak_load_ratio=0.9,
                                 tech_life=15,
@@ -227,18 +204,6 @@ elif choice == 3:
                                 #capital_cost=5500 * pv_capital_cost_adjust,
                                 standalone=True)
 
-        mg_diesel_calc = Technology(om_of_td_lines=0.02,
-                                    distribution_losses=0.05,
-                                    connection_cost_per_hh=125,
-                                    base_to_peak_load_ratio=0.5,
-                                    capacity_factor=0.7,
-                                    tech_life=15,
-                                    om_costs=0.1,
-                                    efficiency=0.33,
-                                    capital_cost=1000,
-                                    diesel_price=diesel_price,
-                                    diesel_truck_consumption=33.7,
-                                    diesel_truck_volume=15000)
 
         sa_diesel_calc = Technology(base_to_peak_load_ratio=0.5,
                                     capacity_factor=0.5,
@@ -250,7 +215,20 @@ elif choice == 3:
                                     efficiency=0.28,
                                     diesel_truck_consumption=14,
                                     diesel_truck_volume=300)
-
+        mg_hybrid  = Technology(om_of_td_lines=0.02,
+                                    distribution_losses=0.05,
+                                    connection_cost_per_hh=125,
+                                    base_to_peak_load_ratio=0.5,
+                                    capacity_factor=0.7,
+                                    tech_life=20,
+                                    om_costs=0.1)
+        
+        # New parameters added
+        mg_hybrid.renewable_invesment_cost = ScenarioParameters.iloc[0]['Renewable Invesment Cost']
+        mg_hybrid.battery_invesment_cost = ScenarioParameters.iloc[0]['Battery Invesment Cost']
+        mg_hybrid.genset_invesment_cost = ScenarioParameters.iloc[0]['Genset Invesment Cost']
+        diesel_truck_consumption = 33.7
+        diesel_truck_volume = 15000
         # RUN_PARAM: Activating (un-commenting) lines 254-294 will run the analysis without time step and help identify differences in the two modelling approaches
         ### RUN - NO TIMESTEP
 
@@ -340,7 +318,10 @@ elif choice == 3:
             onsseter.set_scenario_variables(year, num_people_per_hh_rural, num_people_per_hh_urban, time_step,
                                             start_year, urban_elec_ratio, rural_elec_ratio, urban_tier, rural_tier, end_year_pop, productive_demand)
 
-            onsseter.calculate_off_grid_lcoes(mg_hydro_calc, mg_wind_calc, mg_pv_calc, sa_pv_calc, mg_diesel_calc, sa_diesel_calc, year, start_year, end_year, time_step)
+
+            onsseter.Surrogate_Hybrid(diesel_price,diesel_truck_consumption, diesel_truck_volume ,mg_hybrid)
+            
+            onsseter.calculate_off_grid_lcoes(mg_hydro_calc, sa_pv_calc, sa_diesel_calc, year, start_year, end_year, time_step)
 
             onsseter.pre_electrification(grid_calc, grid_price, year, time_step, start_year)
 

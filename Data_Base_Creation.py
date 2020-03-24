@@ -13,7 +13,7 @@ data = pd.DataFrame()
 Status = pd.read_excel('status1.xls', index_col=0, Header=None)
 
 for i in range(50,520,50):
-    for n in range(150):
+    for n in range(10):
         path = 'Results/Results_' + str(i) + '_'+ str(n) + '.xls'
         name = str(i) + '_'+ str(n)
         print(name)
@@ -84,7 +84,7 @@ for i in range(50,520,50):
 
 
     data = round(data,2)
-    data.to_excel('Data_Base_Fix.xls')        
+    data.to_excel('Data_Base.xls')        
         
         
         

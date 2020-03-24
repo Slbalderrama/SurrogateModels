@@ -37,7 +37,7 @@ Battery_Independency   =  0    # number of days of battery independency
 Curtailment_Unitary_Cost =  0 # probando curtailment cost 0
 #%%
 # Renewable energy parameters
-Renewable_Invesment_Cost = [1000, 2000]
+Renewable_Invesment_Cost = [800, 1800]
 Maintenance_Operation_Cost_Renewable = [0.02, 0.02]
 #%%
 # Battery parameters
@@ -69,7 +69,7 @@ Results = pd.DataFrame()
 Renewable_Nominal_Capacity = instance.Renewable_Nominal_Capacity.extract_values()[1]
 village = range(50, 570, 50) #range(50, 570, 50)
 
-Nruns = 10
+Nruns = 150
 
 Data_Villages = pd.read_excel('Data_Base_Low_Lands.xls',index_col=0,Header=None)
 Villages_Already = pd.read_excel('status1.xls',index_col=0,Header=None)
