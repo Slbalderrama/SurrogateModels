@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt
 import time
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from joblib import dump
 #%%
 Demand = pd. DataFrame()
 
@@ -112,6 +113,8 @@ plt.scatter(X, Plot_Data['Real'])
 plt.scatter(X, Plot_Data['Predicted'])
 plt.scatter(X_new, y_New)
 
+filename = 'OnSSET/Base_case/Regressions/Peak_to_Base.joblib'
+dump(gp, filename) 
 
 #%%
 l = [1]

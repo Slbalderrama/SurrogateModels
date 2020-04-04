@@ -180,9 +180,9 @@ plt.show()
 BoxPlot_NPC = pd.DataFrame()
 BoxPlot_LCOE = pd.DataFrame()
 
-for i in range(50,520,50):
+for i in range(50,570,50):
     df = data.loc[data['HouseHolds']==i]
-    df.index = range(10)
+    df.index = range(150)
     BoxPlot_NPC[i] = df['NPC']/1000
     BoxPlot_LCOE[i] = df['LCOE']
         
@@ -352,26 +352,38 @@ plt.show()
 
 
 #%%
+test = pd.DataFrame()
+
+for i in range(50, 570,50):
+    test[i] = data.loc[data['HouseHolds']==i].mean()
 
 
+test = test.transpose()
 
+test['LCOE'].plot()
+test['NPC'].plot()
+test['Total Demand'].plot()
 
+#Index(['Renewable Invesment Cost', 'Renewable OyM Cost', 'Renewable Capacity',
+#       'Battery Invesment Cost', 'Battery OyM Cost', 'Battery Capacity',
+#       'Generator Invesment Cost', 'Generator OyM Cost', 'Max Demand',
+#       'Mean Demand', 'Total Demand', 'Renewable Penetration',
+#       'Curtailment Percentage', 'Battery Usage Percentage',
+#       'Renewable Energy Unit Total', 'NPC', 'LCOE', 'Operation Cost',
+#       'Renewable Unitary Invesment Cost', 'Battery Unitary Invesment Cost',
+#       'Deep of Discharge', 'Battery Cycles', 'GenSet Unitary Invesment Cost',
+#       'Generator Efficiency', 'Low Heating Value', 'Fuel Cost',
+#       'Generator Nominal capacity', 'Generator Number', 'HouseHolds', 'Gap',
+#       'Time', 'Y'],
+#      dtype='object')
 
+Discount_Rate = 0.12 
+Years = 20
 
+a = Discount_Rate*((1+Discount_Rate)**Years)
+b = ((1 + Discount_Rate)**Years)-1
 
+capital_recovery_factor = a/b
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+test['Expected Demand'] = test['Total Demand']/capital_recovery_factor
+test['LCOE 2'] = test['NPC']/test['Expected Demand']
