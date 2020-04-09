@@ -78,66 +78,69 @@ y = pd.DataFrame(y, columns=[target])
 
 # Linear regression
 # Linear Cross validation
-scoring = 'r2' #'r2' 'neg_mean_absolute_error' # 'neg_mean_squared_error'
-
-lm = linear_model.LinearRegression(fit_intercept=True)
-
-Results = cross_validate(lm, X, y, cv=5,return_train_score=True,n_jobs=-1
-                         , scoring = scoring       )
-
-scores = Results['test_score']
-score = scores.mean()
-
-if scoring == 'neg_mean_squared_error':
-    score = sq(-score)
-    score = round(score,3)    
-    print(scoring + ' for the linear regression in cross validatiion is ' + str(score))
-else:  
-    score = round(score,3)   
-    print(scoring + ' for the linear regression in cross validatiion is ' + str(score))
-
-Results = pd.DataFrame(Results)
-
-path = 'Results_Regressions/Kcross_valiadation_LR_LCOE' + '_' +  scoring + '.csv'
-Results.to_csv(path)
+scoring =  ['r2', 'neg_mean_absolute_error', 'neg_mean_squared_error'] #'r2' 'neg_mean_absolute_error' # 'neg_mean_squared_error'
 
 
-# neg_mean_squared_error for the linear regression in cross validatiion is 0.063
-# neg_mean_absolute_error for the linear regression in cross validatiion is -0.048
-# r2 for the linear regression in cross validatiion is 0.81
+for i in scoring:
+    lm = linear_model.LinearRegression(fit_intercept=True)
+    
+    Results = cross_validate(lm, X, y, cv=5,return_train_score=True,n_jobs=-1
+                             , scoring = i       )
+    
+    scores = Results['test_score']
+    score = scores.mean()
+    
+    if i == 'neg_mean_squared_error':
+        score = sq(-score)
+        score = round(score,3)    
+        print(i + ' for the linear regression in cross validatiion is ' + str(score))
+    else:  
+        score = round(score,3)   
+        print(i + ' for the linear regression in cross validatiion is ' + str(score))
+    
+    Results = pd.DataFrame(Results)
+    
+    path = 'Results_Regressions/Kcross_valiadation_LR_LCOE' + '_' +  i + '.csv'
+    Results.to_csv(path)
+
+
+#r2 for the linear regression in cross validatiion is 0.812
+#neg_mean_absolute_error for the linear regression in cross validatiion is -0.049
+#neg_mean_squared_error for the linear regression in cross validatiion is 0.064
 #%%
 
 # Cross Validation results
-l = [1,1,1,1,1,1,1,1,1,1]
-
-
-#kernel = (C()**2)*RBF(l)
-
-kernel =  RBF(l)
-gp = GaussianProcessRegressor(kernel=kernel,optimizer = 'fmin_l_bfgs_b', 
-                              n_restarts_optimizer=3000)
-scoring =  'neg_mean_squared_error' 
-#'r2' 'neg_mean_absolute_error' # 'neg_mean_squared_error'
-
-Results = cross_validate(gp, X, y, cv=5,return_train_score=True,n_jobs=-1
-                         , scoring = scoring       )
-
-scores = Results['test_score']
-score = round(scores.mean(),4)
-
-if scoring == 'neg_mean_squared_error':
-    score = sq(-score)    
-    print(scoring + ' for the gaussian process with the test data set is ' + str(score))
-else:    
-    print(scoring + ' for the gaussian process with the test data set is ' + str(score))
-# array([0.97784578, 0.98912813, 0.98385372, 0.98807739, 0.98913872])
-# 0.98
- # neg_mean_absolute_error for the gaussian process with the test data set is -0.0151  
-#neg_mean_squared_error for the gaussian process with the test data set is 0.02236 ok
-Results = pd.DataFrame(Results)
-
-path = 'Results_Regressions/Kcross_valiadation_GP_LCOE' + '_' +  scoring + '.csv'
-Results.to_csv(path)
+    
+scoring =  ['r2', 'neg_mean_absolute_error', 'neg_mean_squared_error'] #'r2' 'neg_mean_absolute_error' # 'neg_mean_squared_error'
+for i in scoring:    
+    l = [1,1,1,1,1,1,1,1,1,1]
+    
+    
+    #kernel = (C()**2)*RBF(l)
+    
+    kernel =  RBF(l)
+    gp = GaussianProcessRegressor(kernel=kernel,optimizer = 'fmin_l_bfgs_b', 
+                                  n_restarts_optimizer=3000)
+    
+    Results = cross_validate(gp, X, y, cv=5,return_train_score=True,n_jobs=-1
+                             , scoring = i       )
+    
+    scores = Results['test_score']
+    score = round(scores.mean(),4)
+    
+    if i == 'neg_mean_squared_error':
+        score = sq(-score)    
+        print(i + ' for the gaussian process with the test data set is ' + str(score))
+    else:    
+        print(i + ' for the gaussian process with the test data set is ' + str(score))
+    # array([0.97784578, 0.98912813, 0.98385372, 0.98807739, 0.98913872])
+    # 0.98
+     # neg_mean_absolute_error for the gaussian process with the test data set is -0.0151  
+    #neg_mean_squared_error for the gaussian process with the test data set is 0.02236 ok
+    Results = pd.DataFrame(Results)
+    
+    path = 'Results_Regressions/Kcross_valiadation_GP_LCOE' + '_' +  i + '.csv'
+    Results.to_csv(path)
 
 #%%
 

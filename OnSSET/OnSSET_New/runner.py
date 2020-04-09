@@ -352,7 +352,7 @@ elif choice == 3:
 
         df_summary.to_csv(summary_csv, index=sumtechs)
         onsseter.df.to_csv(settlements_out_csv, index=False)
-        onsseter.df.to_csv('Result_OnSSET_New.csv', index=False)
+        onsseter.df.to_csv('Diesel_58.csv', index=False)
         
         
       

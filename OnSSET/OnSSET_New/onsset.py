@@ -1784,7 +1784,11 @@ class SettlementProcessor:
                 X = []
                 X.append(mg_hybrid.renewable_invesment_cost)
                 X.append(mg_hybrid.battery_invesment_cost)
-                X.append(mg_hybrid.genset_invesment_cost)                
+                X.append(mg_hybrid.deep_of_Discharge)
+                X.append(mg_hybrid.battery_cycles)              
+                X.append(mg_hybrid.genset_invesment_cost) 
+                X.append(mg_hybrid.generator_efficiency)
+                X.append(mg_hybrid.low_heating_value)
                 X.append(row['Diesel Price'])
                 X.append(row['HouseHolds'])  
                 X.append(440) 
