@@ -187,7 +187,7 @@ elif choice == 3:
 
         grid_calc = Technology(om_of_td_lines=0.02,
                                distribution_losses=float(SpecsData.iloc[0][SPE_GRID_LOSSES]),
-                               connection_cost_per_hh=125,
+                               connection_cost_per_hh=150,
                                base_to_peak_load_ratio=float(SpecsData.iloc[0][SPE_BASE_TO_PEAK]),
                                capacity_factor=1,
                                tech_life=30,
@@ -197,8 +197,8 @@ elif choice == 3:
 
         mg_hydro_calc = Technology(om_of_td_lines=0.02,
                                    distribution_losses=0.05,
-                                   connection_cost_per_hh=125,
-                                   base_to_peak_load_ratio=1,
+                                   connection_cost_per_hh=100,
+                                   base_to_peak_load_ratio=float(SpecsData.iloc[0][SPE_BASE_TO_PEAK]),
                                    capacity_factor=0.5,
                                    tech_life=30,
                                    capital_cost=5000,
@@ -206,41 +206,41 @@ elif choice == 3:
 
         mg_wind_calc = Technology(om_of_td_lines=0.02,
                                   distribution_losses=0.05,
-                                  connection_cost_per_hh=125,
-                                  base_to_peak_load_ratio=0.75,
-                                  capital_cost=2500,
+                                  connection_cost_per_hh=100,
+                                  base_to_peak_load_ratio=float(SpecsData.iloc[0][SPE_BASE_TO_PEAK]),
+                                  capital_cost=250000,
                                   om_costs=0.02,
                                   tech_life=20)
 
-        mg_pv_calc = Technology(om_of_td_lines=0.03,
+        mg_pv_calc = Technology(om_of_td_lines=0.02,
                                 distribution_losses=0.05,
-                                connection_cost_per_hh=125,
-                                base_to_peak_load_ratio=0.9,
+                                connection_cost_per_hh=100,
+                                base_to_peak_load_ratio=float(SpecsData.iloc[0][SPE_BASE_TO_PEAK]),
                                 tech_life=20,
                                 om_costs=0.02,
-                                capital_cost=3500 * pv_capital_cost_adjust)
+                                capital_cost=5500 * pv_capital_cost_adjust)
 
-        sa_pv_calc = Technology(base_to_peak_load_ratio=0.9,
+        sa_pv_calc = Technology(base_to_peak_load_ratio=float(SpecsData.iloc[0][SPE_BASE_TO_PEAK]),
                                 tech_life=15,
                                 om_costs=0.02,
                                 capital_cost={0.020: 20000, 0.050: 11050, 0.100: 7660, 0.200: 5780, 0.300: 5070},
-                                #capital_cost=5500 * pv_capital_cost_adjust,
+#                                capital_cost=5500 * pv_capital_cost_adjust,
                                 standalone=True)
 
         mg_diesel_calc = Technology(om_of_td_lines=0.02,
                                     distribution_losses=0.05,
-                                    connection_cost_per_hh=125,
-                                    base_to_peak_load_ratio=0.5,
+                                    connection_cost_per_hh=100,
+                                    base_to_peak_load_ratio=float(SpecsData.iloc[0][SPE_BASE_TO_PEAK]),
                                     capacity_factor=0.7,
-                                    tech_life=15,
+                                    tech_life=20,
                                     om_costs=0.1,
                                     efficiency=0.33,
-                                    capital_cost=1000,
+                                    capital_cost=1480,
                                     diesel_price=diesel_price,
                                     diesel_truck_consumption=33.7,
                                     diesel_truck_volume=15000)
 
-        sa_diesel_calc = Technology(base_to_peak_load_ratio=0.5,
+        sa_diesel_calc = Technology(base_to_peak_load_ratio=float(SpecsData.iloc[0][SPE_BASE_TO_PEAK]),
                                     capacity_factor=0.5,
                                     tech_life=10,
                                     om_costs=0.1,

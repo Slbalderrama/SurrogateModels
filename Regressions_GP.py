@@ -111,7 +111,7 @@ for i in scoring:
     
     kernel =  RBF(l)
     gp = GaussianProcessRegressor(kernel=kernel,optimizer = 'fmin_l_bfgs_b', 
-                                  n_restarts_optimizer=3)
+                                  n_restarts_optimizer=3000)
     
     Results = cross_validate(gp, X, y, cv=5,return_train_score=True,n_jobs=-1
                              , scoring = i)
@@ -130,9 +130,9 @@ for i in scoring:
     path = 'Results_Regressions/Kcross_valiadation_GP_NPC' + '_' +  i + '.csv'
     Results.to_csv(path)
 
-# r2 for the gaussian process with the test data set is 0.98
-# neg_mean_absolute_error for the gaussian process with the test data set is -21775.8
-# neg_mean_squared_error for the gaussian process with the test data set is 36687.5
+#r2 for the linear regression with the test data set is 0.98
+#neg_mean_absolute_error for the linear regression with the test data set is -21775.83
+#neg_mean_squared_error for the linear regression with the test data set is 36687.43640144402
 #%%
 
 # Cross Validation 

@@ -14,8 +14,7 @@ import time
 
 
 data = pd.read_csv('Low_Lands_Data_Results.csv', index_col=None)  
-data = data.loc[data['HouseHolds'] < 550]   
-data = data.loc[50<data['HouseHolds']]   
+
 
 
 Len = len(data)
@@ -83,7 +82,7 @@ def solar_power(args,solar_energy,start,lat):
 
 Power_PV = pd.DataFrame()
 #%%
-for j in data.index[909:]:
+for j in data.index[87:]:
         print(j)
     
         lat = data['Y_deg'][j]
@@ -138,8 +137,10 @@ for j in data.index[909:]:
         Power_PV.loc[j,'Energy'] = Data.sum()[1]/1000
 
 
-        time.sleep(60)
+        time.sleep(100)
 
 
-
+#%%
+        
+Power_PV.to_csv('PV_Energy_LowLands.csv')        
 

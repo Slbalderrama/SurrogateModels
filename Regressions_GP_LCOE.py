@@ -141,7 +141,9 @@ for i in scoring:
     
     path = 'Results_Regressions/Kcross_valiadation_GP_LCOE' + '_' +  i + '.csv'
     Results.to_csv(path)
-
+#r2 for the gaussian process with the test data set is 0.9768
+#neg_mean_absolute_error for the gaussian process with the test data set is -0.0162
+#neg_mean_squared_error for the gaussian process with the test data set is 0.022360679774997897
 #%%
 
 # Cross Validation 

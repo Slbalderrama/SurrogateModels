@@ -327,8 +327,10 @@ elif choice == 3:
             #investlimit = int(input('Provide the targeted investment limit (in USD) for the year {}:'.format(year)))
 
 
-            onsseter.set_scenario_variables(year, num_people_per_hh_rural, num_people_per_hh_urban, time_step,
-                                            start_year, urban_elec_ratio, rural_elec_ratio, urban_tier, rural_tier, end_year_pop, productive_demand)
+            onsseter.set_scenario_variables(year, num_people_per_hh_rural, num_people_per_hh_urban,
+                                            time_step, start_year, urban_elec_ratio, 
+                                            rural_elec_ratio, urban_tier, rural_tier, 
+                                            end_year_pop, productive_demand)
 
 
             onsseter.Surrogate_Hybrid(diesel_price,diesel_truck_consumption, diesel_truck_volume ,mg_hybrid)

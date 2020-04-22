@@ -31,7 +31,7 @@ for i in prices:
     
     sa_diesel[i] = data_lowlands.loc[data_lowlands['FinalElecCode2025'] ==2]
 
-#%%
+#%% 5190
 foo = 0    
 name = ['grid ',' microgrids ', 'sa PV ', 'sa diesel ']
 
@@ -53,13 +53,12 @@ for j in prices:
         Invesment  += invesment
         Capacity   += capacity
         
-        print(j)
-        print(tech['Pop2025'].sum())
-#        print('Population reached by ' + name[foo] + ' is ' + str(population) + ' in scenario ' + j + '.')
-#        print('Invesment in ' + name[foo] + ' is ' + str(invesment) + ' in scenario ' + j + '.')
-#        print('Installed capacity in ' + name[foo] + ' is ' + str(capacity) + ' in scenario ' + j + '.' )
+
+        print('Population reached by ' + name[foo] + ' is ' + str(population) + ' in scenario ' + j + '.')
+        print('Invesment in ' + name[foo] + ' is ' + str(invesment) + ' in scenario ' + j + '.')
+        print('Installed capacity in ' + name[foo] + ' is ' + str(capacity) + ' in scenario ' + j + '.' )
         
     foo += 1
-#    print('Total population is ' + str(Population) + ' in scenario ' + j + '.')
-#    print('Total Invesment is ' + str(Invesment) + ' in scenario ' + j + '.')
-#    print('Total Installed capacity is ' + str(Capacity) + ' in scenario ' + j + '.' )
+    print('Total population is ' + str(Population) + ' in scenario ' + j + '.')
+    print('Total Invesment is ' + str(Invesment) + ' in scenario ' + j + '.')
+    print('Total Installed capacity is ' + str(Capacity) + ' in scenario ' + j + '.' )
