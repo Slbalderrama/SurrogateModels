@@ -52,9 +52,10 @@ def solar_power(args,solar_energy,start,lat):
 
             return data['irradiance_diffuse'] + data['irradiance_direct']
 
-Power_PV = pd.DataFrame()
+#Power_PV = pd.DataFrame()
+Power_PV =  pd.read_csv('GHI_LowLands.csv', index_col=0)              
 #%%
-for j in data.index[1348:]:
+for j in data.index[1023:]:
         print(j)
     
         lat = data['Y_deg'][j]
@@ -109,10 +110,7 @@ for j in data.index[1348:]:
         Power_PV.loc[j,'GHI'] = Data.sum()[1]
 
 
-        time.sleep(80)
-
-
-#%%
-        
-Power_PV.to_csv('GHI_LowLands.csv')        
+        time.sleep(60)
+  
+        Power_PV.to_csv('GHI_LowLands.csv')        
 
