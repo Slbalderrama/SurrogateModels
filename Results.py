@@ -306,8 +306,8 @@ def Load_results1(instance,i,n,type_generator):
     Battery_Data.loc['Deep of Discharge','Battery'] = Deep_of_Discharge
     Battery_Data.loc['Battery Cycles','Battery'] = Battery_Cycles
     Battery_Data.loc['Unitary Battery Reposition Cost (USD/Wh)','Battery'] =  Battery_Repostion_Cost
-    Battery_Data.loc['Fix invesment', Name] = Fix_Invesment_Battery
-    Battery_Data.loc['Investment Decision', Name] = Integer_Battery  
+    Battery_Data.loc['Fix invesment','Battery'] = Fix_Invesment_Battery
+    Battery_Data.loc['Investment Decision','Battery'] = Integer_Battery  
     
     
     Battery_Data.loc['Invesment Cost (USD)','Battery'] = Fix_Invesment_Battery*Integer_Battery + Battery_Nominal_Capacity*PriceBattery

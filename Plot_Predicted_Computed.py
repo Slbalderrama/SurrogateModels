@@ -6,7 +6,6 @@ Created on Fri Dec  6 23:14:23 2019
 @author: balderrama
 """
 
-
 import pandas as pd
 from sklearn.utils import shuffle
 from sklearn.ensemble import RandomForestRegressor
@@ -169,10 +168,16 @@ y_lm_bat = cross_val_predict(lm_bat, X_bat, y_bat, cv=5,n_jobs=-1)
 #plt.show()
 
 
+
 #%%
+title_size = 70
+pad = 30
+tick_size = 20
+fontsize = '30'
 marker_1 = plt.scatter(0,0, marker='o',c='b')
 marker_2 =  plt.scatter(0,0, marker='x',c='orange')
-
+mpl.rcParams['xtick.labelsize'] = tick_size
+mpl.rcParams['ytick.labelsize'] = tick_size
 
 fig = plt.figure(figsize=(40,30))
 size = [40,40]
@@ -189,17 +194,19 @@ ax1.set_xlim([0,1500])
 ax1.set_ylim([-250,1500])
 ax1.set_xlabel('Computed (thousand USD)', size=label_size)
 ax1.set_ylabel('Predicted (thousand USD)', size=label_size)
-plt.legend(handles=[marker_1,marker_2], labels=['GPR',"MVLR"])
+ax1.set_title('NPC', size=title_size,pad=pad)
+plt.legend(handles=[marker_1,marker_2], labels=['GPR',"MVLR"],fontsize=fontsize)
 # LCOE plot
 ax2 = fig.add_subplot(222)
 ax2.scatter(y_LCOE, y_gp_LCOE,s = 10, marker='o')
 ax2.scatter(y_LCOE, y_lm_LCOE,s = 10, marker='x')
-ax2.plot([0, 0.8], [0, 0.8], 'k-', lw=2)
-ax2.set_xlim([0,0.8])
-ax2.set_ylim([-0.5,0.8])
+ax2.plot([0, 1], [0, 1], 'k-', lw=2)
+ax2.set_xlim([0,1])
+ax2.set_ylim([-0.2,1])
 ax2.set_xlabel('Computed (USD/kWh)', size=label_size)
 ax2.set_ylabel('Predicted (USD/kWh)', size=label_size)
-plt.legend(handles=[marker_1,marker_2], labels=['GPR',"MVLR"])
+ax2.set_title('LCOE', size=title_size,pad=pad)
+plt.legend(handles=[marker_1,marker_2], labels=['GPR',"MVLR"],fontsize=fontsize)
 # PV plot
 ax3 = fig.add_subplot(223)
 ax3.scatter(y_PV, y_gp_PV, s = 10, marker='o')
@@ -209,7 +216,8 @@ ax3.set_xlim([0,220])
 ax3.set_ylim([-50,220])
 ax3.set_xlabel('Computed (kW)', size=label_size)
 ax3.set_ylabel('Predicted (kW)', size=label_size)
-plt.legend(handles=[marker_1,marker_2], labels=['GPR',"MVLR"])
+ax3.set_title('PV Nominal Capacity', size=title_size,pad=pad)
+plt.legend(handles=[marker_1,marker_2], labels=['GPR',"MVLR"],fontsize=fontsize)
 # Bat plot
 ax4 = fig.add_subplot(224)
 ax4.scatter(y_bat, y_gp_bat, s = 10, marker='o')
@@ -219,5 +227,6 @@ ax4.set_xlim([0,1050])
 ax4.set_ylim([-200,1050])
 ax4.set_xlabel('Computed (kWh)', size=label_size)
 ax4.set_ylabel('Predicted (kWh)', size=label_size)
-plt.legend(handles=[marker_1,marker_2], labels=['GPR',"MVLR"])
-plt.subplots_adjust(hspace= 0.5)
+ax4.set_title('Battery Nominal Capacity', size=title_size,pad=pad)
+plt.legend(handles=[marker_1,marker_2], labels=['GPR',"MVLR"],fontsize=fontsize)
+plt.subplots_adjust(hspace= 0.25)

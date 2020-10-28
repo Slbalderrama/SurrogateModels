@@ -8,14 +8,11 @@ Created on Fri Nov 22 19:03:33 2019
 
 import pandas as pd
 from sklearn.utils import shuffle
-from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import cross_val_score, cross_validate, cross_val_predict
-from sklearn.model_selection import GridSearchCV
-from sklearn.tree import export_graphviz
 import matplotlib as mpl
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.gaussian_process import GaussianProcessRegressor
-from sklearn.gaussian_process.kernels import RBF, ConstantKernel as C
+from sklearn.gaussian_process.kernels import RBF, ConstantKernel as C, WhiteKernel
 import numpy as np
 from sklearn import linear_model
 from math import sqrt as sq
@@ -156,15 +153,14 @@ scores.mean()
 
 
 #%%
-from sklearn.model_selection import train_test_split
-l = [1,1,1,1,1,1,1,1,1,1]
-#l = [8.39355389e+02, 3.08601304e+02, 2.76926443e-01, 1.11221067e+04,
-#        1.48025407e+03, 8.80945445e-02, 3.32911702e+00, 4.34149233e-01,
-#        1.49795551e+02, 1.57835288e+02]
-#kernel =  (C()**2)*RBF(l)
-kernel =  RBF(l)
+from sklearn.model_selection import train_test_split 
+l1 = [1,1,1,1,1,1,1,1,1,1]
+l2 = [1,1,1,1,1,1,1,1,1,1]
+
+
+kernel =  RBF(l1) + RBF(l2) + WhiteKernel(noise_level_bounds=(1e-10, 1e10))
 X_train, X_test, y_train, y_test = train_test_split(X, y, 
-                                                    test_size=0.1,
+                                                    test_size=0.2,
                                                     random_state=1)
 
 gp = GaussianProcessRegressor(kernel=kernel,n_restarts_optimizer=3000,

@@ -12,6 +12,7 @@ import time
 from joblib import dump, load
 
 start = time.time()
+Status = pd.DataFrame()
 #%%
 
 ''' This script is used to create the data base for the machine learning Technique'''
@@ -37,7 +38,7 @@ Battery_Independency   =  0    # number of days of battery independency
 Curtailment_Unitary_Cost =  0 # probando curtailment cost 0
 #%%
 # Renewable energy parameters
-Renewable_Invesment_Cost = [800, 1800]
+Renewable_Invesment_Cost = [1000, 2000]
 Maintenance_Operation_Cost_Renewable = [0.02, 0.02]
 #%%
 # Battery parameters
@@ -67,7 +68,7 @@ foo = 0
 Data = pd.DataFrame()
 Results = pd.DataFrame()
 Renewable_Nominal_Capacity = instance.Renewable_Nominal_Capacity.extract_values()[1]
-village = range(50, 570, 50) #range(50, 570, 50)
+village = range(500, 570, 50) #range(50, 570, 50)
 
 Nruns = 150
 
@@ -76,7 +77,7 @@ Villages_Already = pd.read_excel('status1.xls',index_col=0,Header=None)
 Data_Villages = Data_Villages.drop(list(Villages_Already['Index']))
 
 
-Status = pd.DataFrame()
+
 
 
 for i in village:
@@ -104,7 +105,7 @@ for i in village:
     
     instance.Renewable_Units[1].setub(max_bound_PV)
     instance.Battery_Nominal_Capacity.setub(max_boumd_bat)
- #75   
+ #133  
     for n in range(Nruns):
         print(i)
         print(n)
@@ -209,8 +210,8 @@ for i in village:
         
         opt.options['Presolve'] = 2
         
-        filename = 'Instance/instance_' + str(i) + '_' + str(n) +  '.joblib'
-        dump(instance, filename) 
+#        filename = 'Instance/instance_' + str(i) + '_' + str(n) +  '.joblib'
+#        dump(instance, filename) 
         
         results = opt.solve(instance, tee=True, options_string="mipgap=0.01",
                             warmstart=False,keepfiles=True,

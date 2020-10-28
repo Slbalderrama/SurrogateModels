@@ -10,10 +10,10 @@ import pandas as pd
 
 data = pd.DataFrame()
 
-Status = pd.read_excel('status1.xls', index_col=0, Header=None)
+#Status = pd.read_excel('status1.xls', index_col=0, Header=None)
 
-for i in range(50,520,50):
-    for n in range(10):
+for i in range(50,570,50):
+    for n in range(150):
         path = 'Results/Results_' + str(i) + '_'+ str(n) + '.xls'
         name = str(i) + '_'+ str(n)
         print(name)
@@ -77,9 +77,9 @@ for i in range(50,520,50):
         data.loc[name, 'Generator Nominal capacity'] = Data_Generator['Generator 1']['Generator Nominal Capacity (W)']   
         data.loc[name, 'Generator Number'] = Data_Generator['Generator 1']['Number of Generators']           
         data.loc[name,'HouseHolds'] = i 
-        data.loc[name,'Gap'] = Status.loc[name, 'Gap']
-        data.loc[name,'Time'] = Status.loc[name, 'Time']
-        data.loc[name,'Y'] = -Status.loc[name, 'Y_deg']
+#        data.loc[name,'Gap'] = Status.loc[name, 'Gap']
+#        data.loc[name,'Time'] = Status.loc[name, 'Time']
+#        data.loc[name,'Y'] = -Status.loc[name, 'Y_deg']
 
 
 

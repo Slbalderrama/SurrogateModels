@@ -32,10 +32,10 @@ for i in range(50, 570,50):
     
     
     
-Demand_min = Demand.min()
+Demand_mean = Demand.mean()
 Demand_max = Demand.max()
 
-Peak_to_Base = Demand_min/Demand_max
+Peak_to_Base = Demand_mean/Demand_max
 
 #%%
 y = Peak_to_Base
@@ -48,11 +48,11 @@ X = np.array(X)
 X = X.reshape(-1, 1)
 #%%
 
-scoring = 'r2' #'r2' 'neg_mean_absolute_error' # 'neg_mean_squared_error'
+scoring ='neg_mean_absolute_error' #'r2' 'neg_mean_absolute_error' # 'neg_mean_squared_error'
 
 lm = linear_model.LinearRegression(fit_intercept=True)
 
-Results = cross_validate(lm, X, y, cv=9,return_train_score=True,n_jobs=-1
+Results = cross_validate(lm, X, y, cv=5,return_train_score=True,n_jobs=-1
                          , scoring = scoring       )
 
 scores = Results['test_score']
@@ -63,12 +63,12 @@ if scoring == 'neg_mean_squared_error':
 else:    
     print(scoring + ' for the linear regression with the test data set is ' + str(score))
 #%%
-l = [1]
-
-kernel =  RBF(l)
+l1 = [1]
+l2 = [1]
+kernel =  RBF(l1) + RBF(l2)
 gp = GaussianProcessRegressor(kernel=kernel,optimizer = 'fmin_l_bfgs_b', 
                               n_restarts_optimizer=3000)
-scoring =  'neg_mean_absolute_error'
+scoring = 'neg_mean_absolute_error'
 #'r2' 'neg_mean_absolute_error' # 'neg_mean_squared_error'
 
 Results = cross_validate(gp, X, y, cv=5,return_train_score=True,n_jobs=-1
@@ -81,12 +81,14 @@ if scoring == 'neg_mean_squared_error':
     print(scoring + ' for the gaussian process with the test data set is ' + str(score))
 else:    
     print(scoring + ' for the gaussian process with the test data set is ' + str(score))
+    
+    
 
 #%%
 
-l = [1]
-
-kernel =  RBF(l)
+l1 = [1]
+l2 = [1]
+kernel =  RBF(l1) + RBF(l2)
 
 gp = GaussianProcessRegressor(kernel=kernel,n_restarts_optimizer=3000,
                               optimizer = 'fmin_l_bfgs_b'
@@ -113,14 +115,18 @@ plt.scatter(X, Plot_Data['Real'])
 plt.scatter(X, Plot_Data['Predicted'])
 plt.scatter(X_new, y_New)
 
-filename = 'OnSSET/Base_case/Regressions/Peak_to_Base.joblib'
+plt.xlabel('HouseHolds')
+plt.ylabel('Peak to base ratio')
+filename = 'Peak_to_Base.joblib'
 dump(gp, filename) 
 
 #%%
-l = [1]
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1)
-kernel =  RBF(l)
-gp = GaussianProcessRegressor(kernel=kernel,n_restarts_optimizer=1100, optimizer = 'fmin_l_bfgs_b')
+l1 = [1]
+l2 = [1]
+kernel =  RBF(l1) + RBF(l2)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1)
+
+gp = GaussianProcessRegressor(kernel=kernel,n_restarts_optimizer=3000, optimizer = 'fmin_l_bfgs_b')
 
 gp = gp.fit(X_train, y_train)
 
@@ -138,8 +144,6 @@ print('R^2 for the gaussian process with the test data set is ' + str(R_2_test))
 MAE_Random =  round(mean_absolute_error(y_test,y_gp),2)
 
 print('MAE for the gaussian process is ' + str(MAE_Random))
-
-
 
 
 

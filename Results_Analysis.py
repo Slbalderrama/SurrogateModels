@@ -13,7 +13,17 @@ import matplotlib.pyplot as plt
 import matplotlib.lines as mlines
 #%%
 # Data load
-data = pd.read_excel('Data_Base.xls', index_col=0, Header=None)   
+data = pd.read_excel('Databases/Database.xls', index_col=0, Header=None)   
+
+#%%
+
+time = round(data['Time'].sum()/3600,0)
+time_average = round(data['Time'].mean(),0)
+gap = round(data['Gap'].mean(),1)
+print('The database creation process took ' + str(time) + ' hours')
+print('The average resolution time was ' + str(time_average) + ' seconds')
+print('The average gap is ' + str(gap) + ' %')
+
 
 #%%
 # Data results
@@ -122,7 +132,7 @@ plt.legend(handles=[
                    Battery_Usage, Energy_Curtailment
  ], bbox_to_anchor=(1, 1),fontsize = 20)
 
-plt.savefig('Duration_Curve_Results.png', bbox_inches='tight')    
+plt.savefig('Plots/Duration_Curve_Results.png', bbox_inches='tight')    
 plt.show()   
 
 #%%
@@ -172,35 +182,46 @@ LCOE = mlines.Line2D([], [], color='k',label='LCOE')
 
 plt.legend(handles=[ NPC, LCOE ], bbox_to_anchor=(1, 1),fontsize = 20)
 
-plt.savefig('Duration_Curve_Costos.png', bbox_inches='tight')    
+plt.savefig('Plots/Duration_Curve_Costos.png', bbox_inches='tight')    
 plt.show()   
 
 #%%
 # Box plots NPC and LCOE
-BoxPlot_NPC = pd.DataFrame()
-BoxPlot_LCOE = pd.DataFrame()
+BoxPlot_NPC  = []
+BoxPlot_LCOE = []
 
 for i in range(50,570,50):
     df = data.loc[data['HouseHolds']==i]
     df.index = range(150)
-    BoxPlot_NPC[i] = df['NPC']/1000
-    BoxPlot_LCOE[i] = df['LCOE']
+    BoxPlot_NPC.append(df['NPC']/1000)
+    BoxPlot_LCOE.append(df['LCOE'])
         
-size = [20,15]
-label_size = 25
 tick_size = 25 
+label_size = 25
+title_size = 50
+fig, axs = plt.subplots(2, figsize=(20, 15))
 mpl.rcParams['xtick.labelsize'] = tick_size 
 mpl.rcParams['ytick.labelsize'] = tick_size 
-ax = BoxPlot_LCOE.boxplot(figsize=size)
-ax.set_xlabel('HouseHolds',size=label_size) 
-ax.set_ylabel('LCOE (USD/kWh)',size=label_size) 
 
-plt.savefig('BoxPlot_LCOE.png', bbox_inches='tight')    
+axs[0].boxplot(BoxPlot_NPC)
+axs[0].set_title('NPC', size=title_size)
 
-ax =BoxPlot_NPC.boxplot(figsize=size)
-ax.set_xlabel('HouseHolds',size=label_size) 
-ax.set_ylabel('NPC (Thousand USD)',size=label_size) 
-plt.savefig('BoxPlot_LCOE.png', bbox_inches='tight')    
+axs[1].boxplot(BoxPlot_LCOE, showfliers=False, whis=0)
+axs[1].set_title('LCOE', size=title_size)
+
+axs[0].set_xlabel('Households', size=label_size)
+axs[0].set_ylabel('NPC (Thousands of USD)', size=label_size)
+axs[0].set_xticklabels(range(50,570,50))
+
+axs[1].set_ylim([0.2,0.7])
+axs[1].set_xlabel('Households', size=label_size)
+axs[1].set_ylabel('LCOE (USD/kWh)', size=label_size)
+axs[1].set_xticklabels(range(50,570,50))
+plt.subplots_adjust(hspace= 0.4)
+
+plt.savefig('Plots/BoxPlot_LCOE_NPC.png', bbox_inches='tight')    
+plt.show()  
+
 # 72
 #%%
 
@@ -270,22 +291,22 @@ plt.legend(handles=[
                    Battery_Usage, Energy_Curtailment
  ], bbox_to_anchor=(1, 1),fontsize = 20)
 
-plt.savefig('Duration_Curve_Capacities.png', bbox_inches='tight')    
+plt.savefig('Plots/Duration_Curve_Capacities.png', bbox_inches='tight')    
 plt.show()   
 
 #%%
-
+'hola'
 
 name = 'Renewable Penetration'
 data_1 = data.copy()
 data_1 = data_1.sort_values(name, ascending=False)
 
     
-index_LDC = []
-for i in range(len(data_1)):
-    index_LDC.append((i+1)/float(len(data_1))*100)
+# index_LDC = []
+# for i in range(len(data_1)):
+#     index_LDC.append((i+1)/float(len(data_1))*100)
     
-data_1.index = index_LDC    
+data_1.index = range(1,len(data_1)+1)
 
 
 size = [20,15]
@@ -299,34 +320,29 @@ ax2=fig.add_subplot(111, label="2", frame_on=False)
 mpl.rcParams['xtick.labelsize'] = tick_size 
 mpl.rcParams['ytick.labelsize'] = tick_size 
 
-ax.plot(index_LDC, data_1['Renewable Capacity'], c='y')
-ax.plot(index_LDC, data_1['Battery Capacity'], c='g')
+ax.plot(range(1,len(data_1)+1) , data_1['Renewable Capacity'], c='y')
+ax.plot(range(1,len(data_1)+1) , data_1['Battery Capacity'], c='g')
 
-ax2.plot(index_LDC, data_1['Renewable Penetration']*100, c='r')
-ax2.plot(index_LDC, data_1['Battery Usage Percentage'], c='k')
+ax2.plot(range(1,len(data_1)+1) , data_1['Renewable Penetration']*100, c='r')
+ax2.plot(range(1,len(data_1)+1) , data_1['Battery Usage Percentage'], c='k')
 #ax2.plot(index_LDC, data_1['Curtailment Percentage'], c='m')
 
 
 ax2.yaxis.tick_right()
 ax2.yaxis.set_label_position('right') 
 # limits
-ax.set_xlim([0,100])
+ax.set_xlim([0,1650])
 ax.set_ylim([0,1000])
 
 
-ax2.set_xlim([0,100])
+ax2.set_xlim([0,1650])
 ax2.set_ylim([0,100])
 
 
 # labels
-ax.set_xlabel('%',size=label_size) 
-ax.set_ylabel('Nominal Capacities',size=label_size) 
-ax2.set_ylabel('%',size=label_size) 
-
-
-ax.set_xlabel('%',size=label_size) 
-ax.set_ylabel('Nominal Capacities',size=label_size) 
-ax2.set_ylabel('%',size=label_size) 
+ax.set_xlabel('Number of simulations',size=label_size) 
+ax.set_ylabel('Nominal Capacities (kW)',size=label_size) 
+ax2.set_ylabel('Renewable penetration (%)',size=label_size) 
 
 #NPC = mlines.Line2D([], [], color='b',label='NPC')
 #LCOE = mlines.Line2D([], [], color='k',label='LCOE')
@@ -346,44 +362,6 @@ plt.legend(handles=[
 #                   , Energy_Curtailment
  ], bbox_to_anchor=(1, 1),fontsize = 20)
 
-plt.savefig('Duration_Curve_Capacities.png', bbox_inches='tight')    
+plt.savefig('Plots/LDC_Renewable_Penetration.png', bbox_inches='tight')    
 plt.show()   
 
-
-
-#%%
-test = pd.DataFrame()
-
-for i in range(50, 570,50):
-    test[i] = data.loc[data['HouseHolds']==i].mean()
-
-
-test = test.transpose()
-
-test['LCOE'].plot()
-test['NPC'].plot()
-test['Total Demand'].plot()
-
-#Index(['Renewable Invesment Cost', 'Renewable OyM Cost', 'Renewable Capacity',
-#       'Battery Invesment Cost', 'Battery OyM Cost', 'Battery Capacity',
-#       'Generator Invesment Cost', 'Generator OyM Cost', 'Max Demand',
-#       'Mean Demand', 'Total Demand', 'Renewable Penetration',
-#       'Curtailment Percentage', 'Battery Usage Percentage',
-#       'Renewable Energy Unit Total', 'NPC', 'LCOE', 'Operation Cost',
-#       'Renewable Unitary Invesment Cost', 'Battery Unitary Invesment Cost',
-#       'Deep of Discharge', 'Battery Cycles', 'GenSet Unitary Invesment Cost',
-#       'Generator Efficiency', 'Low Heating Value', 'Fuel Cost',
-#       'Generator Nominal capacity', 'Generator Number', 'HouseHolds', 'Gap',
-#       'Time', 'Y'],
-#      dtype='object')
-
-Discount_Rate = 0.12 
-Years = 20
-
-a = Discount_Rate*((1+Discount_Rate)**Years)
-b = ((1 + Discount_Rate)**Years)-1
-
-capital_recovery_factor = a/b
-
-test['Expected Demand'] = test['Total Demand']/capital_recovery_factor
-test['LCOE 2'] = test['NPC']/test['Expected Demand']

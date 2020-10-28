@@ -7,19 +7,9 @@ Created on Fri Dec  6 00:36:24 2019
 """
 import pandas as pd
 from sklearn.utils import shuffle
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import cross_val_score, cross_validate, cross_val_predict
-from sklearn.model_selection import GridSearchCV
-from sklearn.tree import export_graphviz
-import matplotlib as mpl
-from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.gaussian_process import GaussianProcessRegressor
-from sklearn.gaussian_process.kernels import RBF, ConstantKernel as C, Matern, ExpSineSquared, RationalQuadratic 
-import numpy as np
-from sklearn import linear_model
 import time
-from sklearn.model_selection import train_test_split
-from joblib import dump
+from joblib import dump, load
 data = pd.read_excel('Data_Base.xls', index_col=0, Header=None)  
 #data = data.loc[data['Renewable Capacity']>0]
 
