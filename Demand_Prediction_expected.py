@@ -75,8 +75,8 @@ lm1 = lm1.fit(X, y)
 dump(lm1, 'Demand_Chaco.joblib')  
 #%%
 
-NPC = load('NPC.joblib')
-LCOE = load('LCOE.joblib')
+NPC = load('NPC_LowLands.joblib')
+LCOE = load('LCOE_LowLands.joblib')
 
 data = pd.read_excel('Data_Base.xls', index_col=0, Header=None)  
 
